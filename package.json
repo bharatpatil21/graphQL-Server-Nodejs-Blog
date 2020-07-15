@@ -1,0 +1,29 @@
+{
+  "name": "graphql-server-nodejs-blog",
+  "version": "1.0.0",
+  "description": "event and user app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bharatpatil21/graphQL-Server-Nodejs-Blog.git"
+  },
+  "author": "bharatpatil21",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bharatpatil21/graphQL-Server-Nodejs-Blog/issues"
+  },
+  "homepage": "https://github.com/bharatpatil21/graphQL-Server-Nodejs-Blog#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
