@@ -5,58 +5,72 @@ const { buildSchema } = require("graphql");
 
 const app = express();
 
-const events = [];
+const products = [
+  {
+    id: 1,
+    name: "Nike Renew Run Running Shoes",
+    price: 200.50
+  },
+  {
+    id: 2,
+    name: "AIR ZOOM PEGASUS 36 SHIELD Walking Shoes",
+    price: 340.50
+  },
+  {
+    id: 3,
+    name: "Nike Runallday Running Shoes",
+    price: 700.50
+  }
+];
 
 app.use(bodyParser.json());
+
+var schema = buildSchema(`
+  type Product {
+    id: ID!
+    name: String!
+    price: Float!
+  }
+
+  input ProductInput {
+    name: String!
+    price: Float!
+  }
+
+  type RootMutation {
+    addProduct(productInput: ProductInput): Product
+  }
+
+  type RootQuery {
+    products: [Product!]!
+  }
+
+  schema {
+    query: RootQuery,
+    mutation: RootMutation
+  }
+`);
+
+var root = {
+  products: () => {
+    return products;
+  },
+  addProduct: (args) => {
+    const product = {
+      id: Math.floor(Math.random() * 100).toString(),
+      name: args.productInput.name,
+      price: +args.productInput.price
+    }
+    products.push(product);
+    return product;
+  },
+};
 
 app.use(
   "/graphql",
   graphqlHttp({
-    schema: buildSchema(`
-    type Event {
-      id: ID!
-      title: String!
-      description: String!
-      price: Float!
-      date: String!
-    }
-
-    input EventInput {
-      title: String!
-      description: String!
-      price: Float!
-      date: String!
-    }
-
-    type RootQuery {
-      events: [Event!]!
-    }
-
-    type RootMutation {
-      createEvent(eventInput: EventInput): Event
-    }
-
-    schema {
-      query: RootQuery,
-      mutation: RootMutation
-    }
-  `),
-    rootValue: {
-      events: () => {
-        return events;
-      },
-      createEvent: (args) => {
-        const event = {
-          id: Math.random().toString(),
-          title: args.eventInput.title,
-          description: args.eventInput.description,
-          price: +args.eventInput.price,
-          date: args.eventInput.date
-        }
-        events.push(event);
-        return event;
-      },
-    },
+    schema: schema,
+    rootValue: root,
     graphiql: true,
   })
 );
