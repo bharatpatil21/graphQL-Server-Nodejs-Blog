@@ -1,3 +1,17 @@
+
+mkdir graphql-node-express
+
+cd graphql-node-express
+
+npm init
+
+npm install --save express 
+
+npm install --save-dev nodemon
+
+
+----------------------------------------
+
 const express = require("express");
 
 const app = express();
