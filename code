@@ -1,0 +1,41 @@
+const express = require("express");
+
+const app = express();
+
+// Route
+app.get("/", (req, res, next) => {
+  res.send("Hello World"); // Return value
+});
+
+app.listen(4201); // PORT Number
+
+------------------------------------------
+
+
+// Construct a schema, using GraphQL schema language
+var schema = buildSchema(`  
+  type Queries { 
+    ## hello - query return string                       
+    hello: String
+  }
+
+  schema {
+    query: Queries
+  }
+`);
+
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello: () => {                // hello -- resolver function
+    return "Hello world!";
+  },
+};
+
+app.use(
+  "/graphql",
+  graphqlHttp({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
